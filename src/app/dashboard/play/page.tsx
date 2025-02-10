@@ -16,11 +16,11 @@ export default function Play() {
       <div className="p-10 w-full font-['Mulish'] bg-zinc-900 flex flex-col gap-6">
         <h1 className="text-4xl font-bold">Practice</h1>
         {/* Side by side UI for practicing */}
-        <section className="md:flex md:flex-row w-full gap-5">
-          <div className="w-[30%] rounded-lg">
+        <section className="flex flex-col md:flex-row w-full justify-center items-center gap-7 md:gap-5">
+          <div className="md:w-[30%] w-full rounded-lg">
             <QuestionLog />
           </div>
-          <div className="w-[70%] rounded-lg min-h-[30vh]">
+          <div className="md:w-[70%] rounded-lg min-h-[30vh]">
             <QuestionRenderer />
           </div>
         </section>

@@ -58,3 +58,10 @@ export const question = pgTable("question", {
     .notNull()
     .default(sql`'{}'::text[]`),
 });
+
+export const userScore = pgTable("userScore", {
+  id: integer().generatedByDefaultAsIdentity().primaryKey(),
+  scoreCollectionID: integer().notNull(),
+  userID: integer().notNull(),
+  score: integer().notNull(),
+});

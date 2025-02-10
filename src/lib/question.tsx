@@ -1,7 +1,7 @@
 "use client";
 
 import { MathJax, MathJaxContext } from "better-react-mathjax";
-import { Button, TextInput } from "@mantine/core";
+import { Button, Loader, TextInput } from "@mantine/core";
 import React, { useEffect, useState, useRef } from "react";
 
 // Interface
@@ -20,6 +20,8 @@ const POLL_INTERVAL = 10000; // Polling interval
 export function QuestionRenderer() {
   // Get question
   const [question, setQuestion] = useState();
+  // Get state for it
+  const [buttonSubmissionState, setButtonSubmissionState] = useState(false);
   // Use Effect
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +42,7 @@ export function QuestionRenderer() {
   //
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setButtonSubmissionState(true);
     const formData = new FormData(event.target as HTMLFormElement);
     const answer = formData.get("response");
     fetch("/api/question", {
@@ -48,10 +51,12 @@ export function QuestionRenderer() {
         type: "ANSWER",
         // @ts-expect-error because it doesn't recognize type
         questionID: question.question.id,
-        response: answer,
+        // @ts-expect-error doesn't recognize as string type
+        response: (answer.replace(/\s/g,'')),
       }),
     }).then((res) => {
       res.json().then((data) => {
+        setButtonSubmissionState(false);
         if (data.correct) {
           // Get the next question and render it
           fetch("/api/question", {
@@ -93,7 +98,7 @@ export function QuestionRenderer() {
     return (
       // Math context!!
       <MathJaxContext>
-        <div className="w-full bg-zinc-800 flex flex-col items-center min-h-[30vh] gap-6">
+        <div className="w-full bg-zinc-800 items-center min-h-[30vh] gap-6 flex flex-col">
           {/* Question block */}
           {/* @ts-expect-error because it doesn't recognize type */}
           {question.question.displayMethod == "text" ? (
@@ -105,9 +110,18 @@ export function QuestionRenderer() {
               {/* @ts-expect-error because it doesn't recognize type */}
               {question.question.answerMethod == "freeResponse" ? (
                 // @eslint-disable-next-line
-                <form className="flex flex-row gap-5" onSubmit={handleSubmit}>
-                  <TextInput name="response" placeholder="Enter your answer" />
-                  <Button type="submit">Submit</Button>
+                <form className="flex flex-col gap-5 w-full" onSubmit={handleSubmit}>
+                  <TextInput name="response" className="w-full" placeholder="Enter your answer" />
+                  {
+                    // Button submission state thingy
+                    (buttonSubmissionState) ? (
+                      // Yes
+                      <Button className="w-full" disabled><Loader color="grape" size={20} /></Button>
+                    ) : (
+                      // For submission
+                      <Button type="submit" className="w-full">Submit</Button>
+                    )
+                  }
                 </form>
               ) : null}
             </>
@@ -125,6 +139,7 @@ export function QuestionRenderer() {
   );
 }
 
+// Question Log
 export function QuestionLog() {
   const [questionLog, setQuestionLog] = useState<[]>();
   const intervalRef = useRef<NodeJS.Timeout | null>(null); // To store the interval reference
