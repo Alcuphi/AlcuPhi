@@ -1,6 +1,7 @@
 "use client";
 
-import { Menu } from "@mantine/core";
+import { Button, Menu, Modal } from "@mantine/core";
+import { useDisclosure } from '@mantine/hooks';
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 
@@ -30,3 +31,20 @@ export function DropdownMenu() {
     </Menu>
   );
 }
+
+// /*
+//   Function to help others change specific focus when playing
+// */
+// export function ChangeFocus() {
+//   const [opened, {open,close}] = useDisclosure();
+//   return (
+//     <>
+//       <Modal opened={opened} onClose={close} title="Authentication">
+//         {/* Modal content */}
+//       </Modal>
+
+
+//       <Button className="w-fit" color="green" variant="default" onClick={open}>Change Focus</Button>
+//     </>
+//   )
+// }

@@ -34,6 +34,7 @@ export const questionCollection = pgTable("questionCollection", {
   name: varchar().notNull(),
   content: varchar().notNull(),
   creator: varchar(),
+  publicID: varchar(),
 });
 
 // Question Log for checking
@@ -53,10 +54,10 @@ export const question = pgTable("question", {
   question: varchar().notNull(),
   answer: varchar().notNull(),
   difficulty: doublePrecision().notNull(),
-  tags: text()
+  tags: varchar()
     .array()
     .notNull()
-    .default(sql`'{}'::text[]`),
+    .default(sql`'{}'::varchar[]`),
 });
 
 export const userScore = pgTable("userScore", {
@@ -65,3 +66,9 @@ export const userScore = pgTable("userScore", {
   userID: integer().notNull(),
   score: integer().notNull(),
 });
+
+// Tags for questions
+export const questionTags = pgTable("questionTags", {
+  id: integer().generatedByDefaultAsIdentity(),
+  tagName: varchar(),
+})

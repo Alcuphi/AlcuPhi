@@ -18,8 +18,8 @@
 }
 
 :root {
-    --background: #ffffff;
-    --foreground: #ededed;
+    --background: #0a0a0a;
+    --foreground: #0a0a0a;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,4 +41,12 @@ body {
         #404040 1px,
         rgba(0, 0, 0, 0) 1px
     );
+}
+
+.gradient_text_community {
+    background: linear-gradient(62.5deg,rgb(119, 216, 255), rgb(0, 255, 191));
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+
 }

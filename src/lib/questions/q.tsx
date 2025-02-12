@@ -7,7 +7,8 @@ import * as fs from "fs";
 /*
   Generate the question with an algorithm based on type and user score, will work on that later
 */
-export function generateQuestion(type: string) {
+export function generateQuestion(tags: string) {
+  let possibleQuestions = [];
   // Get working directory
   const cwd = process.cwd();
   // Find all files in the working directory
@@ -24,19 +25,24 @@ export function generateQuestion(type: string) {
     );
     // Random matching
     for (const question of questionSet.questions) {
-      if (question.type == type || type == "*") {
-        return {
-          displayMethod: question.displayMethod,
-          id: question.id,
-          question: question.question,
-          difficulty: question.difficulty,
-          tags: question.tags,
-          type: question.type,
-          answerMethod: question.answerMethod,
-        };
+      if (question.tags.includes(tags) || tags == "*") {
+        possibleQuestions.push(
+          {
+            displayMethod: question.displayMethod,
+            id: question.id,
+            question: question.question,
+            difficulty: question.difficulty,
+            tags: question.tags,
+            type: question.type,
+            answerMethod: question.answerMethod,
+          }
+        );
       }
     }
+
+    
   }
+  return possibleQuestions[0];
 }
 
 /*
