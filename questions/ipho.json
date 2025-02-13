@@ -12,6 +12,16 @@
       "answer": "100",
       "difficulty": 0,
       "tags": ["mechanics", "kinematics"]
+    },
+    {
+      "type": "question",
+      "displayMethod": "text",
+      "answerMethod": "freeResponse",
+      "id": "qset.ipho.4",
+      "question": "A closed vessel with volume \\(V_0 = 10\\,\\text{l}\\) contains dry air in the normal conditions \\(t_0 = 0^\\circ \\text{C} = 273.15\\,\\text{K}\\) and \\(p_0 = 1\\,\\text{atm}\\). In some moment, \\(3\\,\\text{g}\\) of water were added to the vessel, and the system was warmed up to \\(t = 100^\\circ \\text{C} = 373.15\\,\text{K}\\). Find the pressure in the vessel.\n*Do not include units in your answer.*",
+      "answer": "1.88",
+      "difficulty": 0,
+      "tags": ["thermodynamics", "pressure", "gas"]   
     }
   ]
 }

@@ -44,9 +44,8 @@ body {
 }
 
 .gradient_text_community {
-    background: linear-gradient(62.5deg,rgb(119, 216, 255), rgb(0, 255, 191));
+    background: linear-gradient(62.5deg,rgb(30, 226, 62), rgb(92, 255, 214));
     -webkit-background-clip: text;
             background-clip: text;
     -webkit-text-fill-color: transparent;
-
 }

@@ -44,6 +44,10 @@ export const questionLog = pgTable("questionLog", {
   userID: integer().notNull(),
   correct: boolean().notNull(),
   timestamp: varchar().notNull(),
+  tags: varchar()
+    .array()
+    .notNull()
+    .default(sql`'{}'::varchar[]`),
 });
 
 // Questions for Community

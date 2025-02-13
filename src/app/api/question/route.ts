@@ -35,9 +35,7 @@ export async function POST(request: NextRequest) {
     // Mainly for getting the question
     // TODO: Create the question algorithm
     if (data.type == "REQUEST") {
-      const question = generateQuestion("*");
-      console.log(question);
-      // @ts-expect-error Expected because of question
+      const question = await generateQuestion("*", token.credentials);
       if (question.id.startsWith("qset.")) {
         return NextResponse.json({
           question: question,

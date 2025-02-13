@@ -2,20 +2,30 @@
   Question Library
   ©2025 AlcuPhi. Open source under the CC0 license.
 */
+import { db } from "@/db/db";
+import { questionLog } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import * as fs from "fs";
 
 /*
   Generate the question with an algorithm based on type and user score, will work on that later
 */
-export function generateQuestion(tags: string) {
+export async function generateQuestion(tags: string, user: any) {
+  let log = (await (await db()).select().from(questionLog).where(eq(user.id, questionLog.userID)))
+  // Define variables for log
+  let totalQuestions = 0;
+  let correctQuestions = 0;
+  // Foreach
+  log.forEach((element) => {
+    // Check if element includes tags and if element is correct
+    if (element.correct && ((element.tags.includes(tags) || tags == "*"))) {
+      // TODO: Make better difficulty rating algorithm
+      correctQuestions++;
+    }
+    totalQuestions++;
+  })
+
   let possibleQuestions = [];
-  // Get working directory
-  const cwd = process.cwd();
-  // Find all files in the working directory
-  for (const file of fs.readdirSync(cwd)) {
-    console.log(file);
-  }
-  console.log(cwd);
   // Read each type of question
   // Check all question sets
   for (const file of fs.readdirSync("./questions")) {
@@ -39,10 +49,20 @@ export function generateQuestion(tags: string) {
         );
       }
     }
-
-    
   }
-  return possibleQuestions[0];
+  // Check possible questions
+  // @ts-expect-error ofc we would have this
+  let questions = [];
+  // Append if difficulty is greater
+  possibleQuestions.forEach((question) => {
+    // Check if ratio is greater than difficulty or question difficulty is 0
+    if ((((1.0 * correctQuestions)/totalQuestions) * 10) >= question.difficulty || question.difficulty == 0) {
+      questions.push(question)
+    }
+  })
+  // Return
+  // @ts-expect-error ofc we would have this issue
+  return questions[Math.trunc((Math.random() * questions.length))];
 }
 
 /*
