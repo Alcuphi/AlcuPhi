@@ -2,7 +2,7 @@
     Community page source file
 */
 
-import { DropdownMenu } from "@/lib/menu";
+import { DropdownMenu, NewQuestionSet } from "@/lib/menu";
 import { getSessionData } from "@/lib/session";
 import { SplashScreen } from "@/lib/ui";
 import { Button } from "@mantine/core";
@@ -10,7 +10,7 @@ import { CirclePlus, GlobeIcon } from "lucide-react";
 import Link from "next/link";
 
 export default async function Community() {
-    const session = (await getSessionData()).credentials;
+  const session = (await getSessionData()).credentials;
   return (
     <div className="bg-zinc-900 h-full w-full absolute">
       {/* For the top menu */}
@@ -33,7 +33,7 @@ export default async function Community() {
               <p>What would you like to practice today?</p>
             </div>
             {/* Component to create question set */}
-            <Button component={Link} variant="filled" color="rgba(44, 150, 12, 1)" href={'/dashboard/community/create'} leftSection={(<CirclePlus />)}><span className="text-[15px] font-bold">Create question set</span></Button>
+            <NewQuestionSet />
         </div>
       </div>
     </div>

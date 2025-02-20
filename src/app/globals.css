@@ -49,3 +49,16 @@ body {
             background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.gradient_text_create {
+    background: linear-gradient(62.5deg,rgb(226, 157, 30), rgb(252, 255, 92));
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent; 
+}
+
+/* For light mode */
+:root[data-mantine-color-scheme="light"] {
+    --mantine-color-body: #18181b !important;
+  }
+  
