@@ -35,7 +35,7 @@ export default function App() {
             >
               Alcuphi
             </Link>
-            . Open source under the CC0-1.0 Universal License. <i>Application Preview</i>
+            . Open source under the CC0-1.0 Universal License.
           </p>
         </footer>
       </div>

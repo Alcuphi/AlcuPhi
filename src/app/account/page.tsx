@@ -66,7 +66,7 @@ export default async function SignIn({ searchParams }: { searchParams: any }) {
           <h1 className="font-['STIX'] font-[700] text-[45px] w-[75%]">
             alcuφ
           </h1>
-          <p>Login with your account</p>
+          <p>Login to your account</p>
           {/* Error message */}
           <p className="text-red-400">{message}</p>
         </div>

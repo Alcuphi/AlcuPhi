@@ -32,9 +32,13 @@ export const session = pgTable("session", {
 export const questionCollection = pgTable("questionCollection", {
   id: bigint({'mode': 'number'}).generatedAlwaysAsIdentity().primaryKey(),
   name: varchar().notNull(),
-  content: varchar().notNull(),
+  description: varchar().notNull(),
   creatorID: bigint({'mode': 'number'}).references(() => user.id),
   publicID: varchar(),
+  tags: varchar()
+    .array()
+    .notNull()
+    .default(sql`'{}'::varchar[]`),
 });
 
 // Question Log for checking

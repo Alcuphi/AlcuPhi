@@ -60,5 +60,16 @@ body {
 /* For light mode */
 :root[data-mantine-color-scheme="light"] {
     --mantine-color-body: #18181b !important;
-  }
-  
+}
+
+.bg_override {
+    background-color: #3b3b3b !important;
+}
+
+.bg-tags {
+    background-color: #6b6b6b !important;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: .25em;
+    padding-bottom: .25em;
+}
