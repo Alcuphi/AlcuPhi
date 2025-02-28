@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import "@/app/globals.css";
 import "@mantine/core/styles.css";
+import "@/app/globals.css";
 import { MantineProvider } from "@mantine/core";
 
 export const metadata: Metadata = {

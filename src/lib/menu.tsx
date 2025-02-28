@@ -1,12 +1,13 @@
 "use client";
 
-import { Alert, Button, Menu, Modal, TagsInput, Textarea, TextInput } from "@mantine/core";
+import { Alert, Button, Menu, Modal, Select, TagsInput, Textarea, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { LogOut, CirclePlus, Newspaper, AlertCircle } from "lucide-react";
+import { LogOut, CirclePlus, Newspaper, AlertCircle, Tags } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
-import { json } from "stream/consumers";
+// CSS Import
+import "@/lib/styles/menu.css"
 
 export function DropdownMenu() {
   return (
@@ -190,3 +191,181 @@ export function NewQuestionSet({name}: {name: string | undefined}) {
 //     </>
 //   )
 // }
+
+// SetRenderer file for rendering sets
+export function SetRenderer({sets, filterByCreator = true}: {sets: any, filterByCreator: boolean}) {
+  // Set states and constants
+  const [set, setRender] = useState<[]>(sets);
+  const setCount = set.length;
+  const [RenderCount, setRenderCount] = useState(5);
+  const [currentRenderCount, setCurrentRenderCount] = useState(RenderCount);
+
+  return (
+    <>
+      {/* Filter */}
+      <div className="bg-zinc-950 w-full rounded-lg min-h-[10vh] flex flex-col p-6 space-y-6">
+        <h1 className="text-2xl font-bold text-white">Options:</h1>  
+        <div className="space-y-4">
+          <TagsInput
+            placeholder="Set Tags"
+            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2"
+            label={
+              <label className="block text-sm font-medium text-zinc-400 mb-2">
+                Filter by set tags:
+              </label>
+            }
+            onChange={value => {
+              // @ts-expect-error We expect this to occur
+              let updateArr = [];
+              // @ts-expect-error We expect this to occur
+              sets.forEach(setInfo => {
+                for (let i = 0; i < value.length; i++) {
+                  if (setInfo.setInfo.setTags.includes(value[i])) {
+                    updateArr.push(setInfo);
+                  }
+                }
+              });
+              if (value.length == 0) {
+                setRender(sets);
+              } else {
+                // @ts-expect-error We expect this to occur
+                setRender(updateArr);
+              }
+            }}
+          />    
+          <div className="space-y-4">
+            <Select
+              label="Sets per page:"
+              defaultValue="5"
+              data={["5","10", "20", "50"]}
+              className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg shadow-sm"
+              onChange={(val) => {
+                // @ts-expect-error We expect this to occur
+                setRenderCount(parseInt(val));
+                // @ts-expect-error We expect this to occur
+                setCurrentRenderCount(parseInt(val));
+              }}
+            />
+            {/* Filter by creator */}
+            {
+              filterByCreator ? (
+                <>
+                  <TextInput label="Filter by creator:"
+                  placeholder="system"
+                  onChange={value => {
+                    // @ts-expect-error We expect this to occur
+                    let updateArr = [];
+                    // @ts-expect-error We expect this to occur
+                    sets.forEach(setInfo => {
+                      if (setInfo.userInfo.name.toLowerCase().includes(value.target.value.toLowerCase())) {
+                        updateArr.push(setInfo);
+                      }
+                    });
+                    if (value.target.value.length == 0) {
+                      setRender(sets);
+                    } else {
+                      // @ts-expect-error We expect this to occur
+                      setRender(updateArr);
+                    }
+                  }}
+                  />
+                </>
+              ) : null
+            }
+
+            {/* Filter by creator */}
+            <TextInput label="Filter by set name:"
+            placeholder="Ohm's law review"
+            onChange={value => {
+              // @ts-expect-error We expect this to occur
+              let updateArr = [];
+              // @ts-expect-error We expect this to occur
+              sets.forEach(setInfo => {
+                if (setInfo.setInfo.setName.toLowerCase().includes(value.target.value.toLowerCase())) {
+                  updateArr.push(setInfo);
+                }
+              });
+              if (value.target.value.length == 0) {
+                setRender(sets);
+              } else {
+                // @ts-expect-error We expect this to occur
+                setRender(updateArr);
+              }
+            }}
+            />
+          </div>
+        </div>
+      </div>
+      {/* Set Renderer */}
+      <h1 className="font-extrabold mb-8 text-2xl">{setCount} {setCount > 1 ? "sets" : "set"} found.</h1>
+      {
+        set.map((keySet, i) => {
+          if (i >= (currentRenderCount - RenderCount) && i < currentRenderCount) {
+            return (
+              // @ts-expect-error expect the unexpected
+              <Link href={'/dashboard/community/set?id=' + keySet.setInfo.publicID} className="relative rounded-lg bg_override h-64 flex flex-col w-full overflow-hidden" key={i}>
+              <div
+                // Class
+                className="absolute inset-0 bg-cover bg-center filter blur-0 opacity-50 group-hover:opacity-75 transition-opacity duration-300"
+                style={{
+                  backgroundImage: `url('/bg_community.png')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              ></div>
+              {/* Big Text */}
+              {/* Text */}
+              <div className="relative z-10 flex flex-col justify-center h-full items-center p-6 gap-2">
+                {/* @ts-expect-error we know it will error out as the component has no idea */}
+                <h1 className="text-2xl font-black text-white">{keySet.setInfo.setName}</h1>
+                {/* @ts-expect-error we know it will error out as the component has no idea */}
+                <h2 className="text-xl font-bold text-white">by {keySet.userInfo.name}</h2>
+                <p className="mt-1 font-['Mulish'] font-extrabold text-gray-300 text-center">
+                {/* @ts-expect-error we know it will error out as the component has no idea */}
+                  {keySet.setInfo.setDescription}
+                </p>
+                {/* Map tagsd */}
+                {
+                /* @ts-expect-error we know it will error out as the component has no idea */
+                keySet.setInfo.setTags.map((tag, id) => {
+                    return (
+                      <p key={id} className="text-gray-300 pl-3 pr-3 bg-tags rounded-md">
+                        {tag}
+                      </p>
+                    )
+                  })
+                }
+              </div>
+            </Link>
+
+            )            
+          }
+        })
+      }
+      {/* Check if count is sufficient and allow buttons to change */}
+      {
+        ((currentRenderCount/RenderCount) != (Math.trunc(set.length/RenderCount)) + 1) ?
+        (<>
+          <Button
+          // Onclick handling
+          onClick={() => {
+            setCurrentRenderCount(currentRenderCount + RenderCount);
+          }}
+          >Next Page</Button>
+        </>) : null
+      }
+      {/* Previous renderer */}
+      {
+        ((currentRenderCount/RenderCount) != 1) ?
+        (<>
+          <Button
+          // Onclick handling
+          onClick={() => {
+            setCurrentRenderCount(currentRenderCount - RenderCount);
+          }}
+          >Previous Page</Button>
+        </>) : null
+      }
+    </>
+  )
+}
