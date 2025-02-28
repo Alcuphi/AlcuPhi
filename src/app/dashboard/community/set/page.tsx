@@ -45,8 +45,7 @@ export default async function Set({ searchParams }: { searchParams: any }) {
   }
   // Define setData
   const setData = set[0];
-  // @ts-expect-error Expect it since yes
-  const creator = await (await db()).select({"name": user.name,"id": user.id}).from(user).where(eq(user.id,setData.creatorID))[0];
+  const creator = await (await db()).select({"name": user.name,"id": user.id}).from(user).where(eq(user.id,setData.creatorID));
   // Our set
   return (
     <div className="bg-zinc-900 h-full w-full absolute">
@@ -69,7 +68,7 @@ export default async function Set({ searchParams }: { searchParams: any }) {
                   <span className="gradient_text_create">{setData.name}</span>
               </h1>
               <p>{setData.description}</p>
-              <p>By {creator.name}</p>
+              <p>By {creator[0].name}</p>
             </div>
         </div>
       </div>
