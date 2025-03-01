@@ -1,5 +1,5 @@
 /*
-    Set page source file
+    Edit page source file
 */
 
 import { db } from "@/db/db";
@@ -12,7 +12,7 @@ import { eq } from "drizzle-orm";
 import { ArrowLeft, Brain, BrainIcon, Pencil, TvIcon } from "lucide-react";
 import Link from "next/link";
 
-export default async function Set({ searchParams }: { searchParams: any }) {
+export default async function EditSet({ searchParams }: { searchParams: any }) {
   // Get vars
   const session = (await getSessionData()).credentials;
   //   Get specific set by checking
@@ -62,7 +62,7 @@ export default async function Set({ searchParams }: { searchParams: any }) {
         {/* Text */}
         <div className="gap-5 flex w-full flex-col">
             {/* Practice button */}
-            <Link href={'/dashboard/community'} className="flex gap-1 hover:gap-3 transition-all"><ArrowLeft /> BACK TO COMMUNITY</Link>
+            <Link href={'/dashboard/community/set?id=' + setData.publicID} className="flex gap-1 hover:gap-3 transition-all"><ArrowLeft /> BACK TO SET</Link>
             <div>
               <h1 className="font-black text-5xl gap-2  flex flex-col"><Brain size={30} /> 
                   <span className="gradient_text_create">{setData.name}</span>
@@ -70,13 +70,6 @@ export default async function Set({ searchParams }: { searchParams: any }) {
               <p>{setData.description}</p>
               <p>By {creator[0].name}</p>
             </div>
-            {
-              // @ts-expect-error Since session ID
-              (creator[0].id != session.id) ? null :
-              (
-                <Button className="w-[25%]" component={Link} href={'/dashboard/community/set/edit?id=' + setData.publicID} leftSection={(<Pencil size={20} />)}>Edit</Button>
-              )
-            }
         </div>
       </div>
     </div>
