@@ -21,10 +21,8 @@ export default async function RootLayout({
     return redirect("/logout");
   }
   return (
-    <html lang="en">
-      <body className="antialiased text-white">
-        <MantineProvider>{children}</MantineProvider>
-      </body>
-    </html>
+    <>
+       {children}
+    </>
   );
 }

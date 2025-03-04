@@ -18,13 +18,13 @@
 }
 
 :root {
-    --background: #0a0a0a;
+    --background: rgb(24 24 27 / var(--tw-bg-opacity, 1));
     --foreground: #0a0a0a;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --background: #0a0a0a;
+        --background: rgb(24 24 27 / var(--tw-bg-opacity, 1));
     }
 }
 
@@ -59,7 +59,7 @@ body {
 
 /* For light mode */
 :root[data-mantine-color-scheme="light"] {
-    --mantine-color-body: #18181b !important;
+    --mantine-color-body: #1a1919 !important;
 }
 
 .bg_override {

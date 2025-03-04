@@ -1,8 +1,8 @@
 "use client";
 
-import { Alert, Button, Menu, Modal, Select, TagsInput, Textarea, TextInput } from "@mantine/core";
+import { Alert, Button, Menu, Modal, Select, TagsInput, Textarea, TextInput,Loader } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { LogOut, CirclePlus, Newspaper, AlertCircle, Tags } from "lucide-react";
+import { LogOut, CirclePlus, Newspaper, AlertCircle, Tags, Trash } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
@@ -366,6 +366,42 @@ export function SetRenderer({sets, filterByCreator = true}: {sets: any, filterBy
           >Previous Page</Button>
         </>) : null
       }
+    </>
+  )
+}
+
+export function DeleteSet({id}:{id:string}) {
+  const [opened, {open, close}] = useDisclosure();
+  const [loadingState,setLoadingState] = useState(false);
+  // Confirmation to delete the set
+  function deleteConfirmation(event: any) {
+    // FormEvent
+    event.preventDefault();
+    // State set
+    setLoadingState(true);
+  }
+  return (
+    <>
+      {/* Confirmation to delete set */}
+      <Modal opened={opened} onClose={close} title={(<span className="flex flex-row justify-center items-center gap-2"><Trash size={20}/> Confirmation</span>)} centered>
+      {/* Items and justify */}
+        <div className="w-[90%] h-full flex flex-col p-4 gap-5">
+          <div>
+            <h1 className="text-[25px] font-bold">Are you sure you want to delete this set?</h1>
+            <p>This is <strong>irreversible</strong>. You won't be able to get the questions and all data will be deleted.</p>
+          </div>
+          {/* Confirm */}
+          <form onSubmit={deleteConfirmation}>
+            {
+              loadingState ? 
+              (
+                <Button type="submit" color="red" className="w-full"><Loader color="white" type="bars" size={15}  /></Button>
+              ) : (<Button type="submit" color="red">Yes, I am sure.</Button>)
+            }
+          </form>
+        </div>
+      </Modal>
+      <Button color="red" onClick={open}>Delete Set</Button>
     </>
   )
 }

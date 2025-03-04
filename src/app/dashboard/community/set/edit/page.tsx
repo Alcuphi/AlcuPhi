@@ -4,12 +4,12 @@
 
 import { db } from "@/db/db";
 import { questionCollection, user } from "@/db/schema";
-import { DropdownMenu, NewQuestionSet, SetRenderer } from "@/lib/menu";
+import { DeleteSet, DropdownMenu, NewQuestionSet, SetRenderer } from "@/lib/menu";
 import { getSessionData } from "@/lib/session";
 import { SplashScreen } from "@/lib/ui";
-import { Button } from "@mantine/core";
+import { Alert, Button, TagsInput, Textarea, TextInput } from "@mantine/core";
 import { eq } from "drizzle-orm";
-import { ArrowLeft, Brain, BrainIcon, Pencil, TvIcon } from "lucide-react";
+import { ArrowLeft, Brain, BrainIcon, Pencil } from "lucide-react";
 import Link from "next/link";
 
 export default async function EditSet({ searchParams }: { searchParams: any }) {
@@ -45,6 +45,7 @@ export default async function EditSet({ searchParams }: { searchParams: any }) {
   }
   // Define setData
   const setData = set[0];
+  // @ts-ignore
   const creator = await (await db()).select({"name": user.name,"id": user.id}).from(user).where(eq(user.id,setData.creatorID));
   // Our set
   return (
@@ -61,7 +62,11 @@ export default async function EditSet({ searchParams }: { searchParams: any }) {
       <div className="p-10 gap-5 w-full bg-zinc-900 flex flex-col">
         {/* Text */}
         <div className="gap-5 flex w-full flex-col">
-            {/* Practice button */}
+            {/* Alert */}
+            <Alert color="rgba(255, 0, 0, 1)" icon={(<Pencil color="white" />)}>
+              <h1 className="text-white">You are currently editing {setData.name}.</h1>
+            </Alert>
+            {/* Other notices */}
             <Link href={'/dashboard/community/set?id=' + setData.publicID} className="flex gap-1 hover:gap-3 transition-all"><ArrowLeft /> BACK TO SET</Link>
             <div>
               <h1 className="font-black text-5xl gap-2  flex flex-col"><Brain size={30} /> 
@@ -70,6 +75,18 @@ export default async function EditSet({ searchParams }: { searchParams: any }) {
               <p>{setData.description}</p>
               <p>By {creator[0].name}</p>
             </div>
+            {/* Edit set */}
+            <form className="w-[50%] gap-2 flex flex-col">
+              <h1 className="text-[25px] font-bold">Edit Attributes</h1>
+              {/* Attributes */}
+              <TextInput label="Name:" defaultValue={setData.name} required />
+              <Textarea label="Description:" defaultValue={setData.description} required />
+              <TagsInput label="Tags:" required defaultValue={setData.tags} />
+              <div className="flex gap-2">
+                <Button>Edit</Button>
+                <DeleteSet />
+              </div>
+            </form>
         </div>
       </div>
     </div>
