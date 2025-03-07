@@ -4,7 +4,7 @@ import { Alert, Button, Menu, Modal, Select, TagsInput, Textarea, TextInput,Load
 import { useDisclosure } from "@mantine/hooks";
 import { LogOut, CirclePlus, Newspaper, AlertCircle, Tags, Trash } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 // CSS Import
 import "@/lib/styles/menu.css"
@@ -370,7 +370,10 @@ export function SetRenderer({sets, filterByCreator = true}: {sets: any, filterBy
   )
 }
 
-export function DeleteSet({id}:{id:string}) {
+export function DeleteSet({id}:{id:number}) {
+  // Define router
+  let router = useRouter();
+  // Constants
   const [opened, {open, close}] = useDisclosure();
   const [loadingState,setLoadingState] = useState(false);
   // Confirmation to delete the set
@@ -379,6 +382,20 @@ export function DeleteSet({id}:{id:string}) {
     event.preventDefault();
     // State set
     setLoadingState(true);
+    // Delete
+    fetch("/api/community", {
+      'method': "DELETE",
+      'body': JSON.stringify({
+        'method': 'DELETE_SET',
+        'id': id
+      })
+    }).then(data => {data.json().then(res => {
+      // Check if status is success and redirect back
+      // to your sets
+      if (res.status == "success") {
+        router.push('/dashboard/community/my')
+      }
+    })})
   }
   return (
     <>

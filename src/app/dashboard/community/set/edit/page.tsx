@@ -2,6 +2,7 @@
     Edit page source file
 */
 
+import { Community } from "@/actions/community";
 import { db } from "@/db/db";
 import { questionCollection, user } from "@/db/schema";
 import { DeleteSet, DropdownMenu, NewQuestionSet, SetRenderer } from "@/lib/menu";
@@ -76,15 +77,17 @@ export default async function EditSet({ searchParams }: { searchParams: any }) {
               <p>By {creator[0].name}</p>
             </div>
             {/* Edit set */}
-            <form className="w-[50%] gap-2 flex flex-col">
+            <form className="w-[50%] gap-2 flex flex-col" action={Community.editSet}>
               <h1 className="text-[25px] font-bold">Edit Attributes</h1>
               {/* Attributes */}
-              <TextInput label="Name:" defaultValue={setData.name} required />
-              <Textarea label="Description:" defaultValue={setData.description} required />
-              <TagsInput label="Tags:" required defaultValue={setData.tags} />
+              <TextInput label="Name:" name="setName" defaultValue={setData.name} required />
+              {/* @ts-expect-error We must expect this error. */}
+              <TextInput label="Set ID:" name="setPublicID" defaultValue={setData.publicID} className="hidden" required />
+              <Textarea label="Description:" name="setDescription" defaultValue={setData.description} required />
+              <TagsInput label="Tags:" name="setTags" required defaultValue={setData.tags} />
               <div className="flex gap-2">
-                <Button>Edit</Button>
-                <DeleteSet />
+                <Button type="submit">Edit</Button>
+                <DeleteSet id={setData.id} />
               </div>
             </form>
         </div>

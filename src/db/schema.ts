@@ -53,6 +53,8 @@ export const questionLog = pgTable("questionLog", {
     .notNull()
     .default(sql`'{}'::varchar[]`),
   response: varchar().notNull(),
+  // setID
+  collectionID: bigint({'mode': 'number'}),
 });
 
 // Questions for Community
