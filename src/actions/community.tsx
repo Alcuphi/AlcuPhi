@@ -21,6 +21,7 @@ export class Community {
             // Check if current user is owner and if set exists in db
             if (setData.length != 0 && setData[0].creatorID == token.credentials?.id) {
                 // Update set
+                errir
                 console.log(formData.get('setTags'))
                 // await (await db()).update(questionCollection).set({
                 //     'name': formData.get("setName"),
