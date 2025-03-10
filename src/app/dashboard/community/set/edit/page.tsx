@@ -11,6 +11,7 @@ import { SplashScreen } from "@/lib/ui";
 import { Alert, Button, TagsInput, Textarea, TextInput } from "@mantine/core";
 import { eq } from "drizzle-orm";
 import { ArrowLeft, Brain, BrainIcon, Pencil } from "lucide-react";
+import { redirect } from "next/dist/server/api-utils";
 import Link from "next/link";
 
 export default async function EditSet({ searchParams }: { searchParams: any }) {
@@ -41,13 +42,36 @@ export default async function EditSet({ searchParams }: { searchParams: any }) {
             <Button component={Link} href={'/dashboard/community'} leftSection={(<ArrowLeft />)}>Back to Community</Button>
       </div>
     </div>
-
     )
   }
   // Define setData
   const setData = set[0];
   // @ts-ignore
   const creator = await (await db()).select({"name": user.name,"id": user.id}).from(user).where(eq(user.id,setData.creatorID));
+  // Return not found if not owner of set to edit or if session role is user
+  if (creator[0].id != session?.id || session?.role == "user") {
+    return (
+      <div className="bg-zinc-900 h-full w-full absolute">
+      {/* For the top menu */}
+      <div className="w-[100%] flex justify-center p-3 items-center gap-6">
+        <div className="font-['STRIX'] text-3xl underline hover:cursor-pointer select-none">
+          <DropdownMenu />
+        </div>
+        <SplashScreen />
+      </div>
+      {/* 404 UI */}
+      <div className="gap-5 w-full bg-zinc-900 flex flex-col justify-center items-center h-[90vh]">
+            <div className="flex">
+              <h1 className="font-black text-5xl gap-2 items-center justify-center flex"><BrainIcon size={30} /> 
+                  <span className="gradient_text_create">Sets</span>
+              </h1>
+            </div>
+            <p className="w-[80%] text-center">Unfortunately. The set you are looking for couldn&apos;t be found. Do you have the correct link?</p>
+            <Button component={Link} href={'/dashboard/community'} leftSection={(<ArrowLeft />)}>Back to Community</Button>
+      </div>
+    </div>
+    )
+  }
   // Our set
   return (
     <div className="bg-zinc-900 h-full w-full absolute">

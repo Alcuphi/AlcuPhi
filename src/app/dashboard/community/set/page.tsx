@@ -72,7 +72,7 @@ export default async function Set({ searchParams }: { searchParams: any }) {
             </div>
             {
               // @ts-expect-error Since session ID
-              (creator[0].id != session.id) ? null :
+              (creator[0].id != session.id || session.role == "user") ? null :
               (
                 <Button className="w-[25%]" component={Link} href={'/dashboard/community/set/edit?id=' + setData.publicID} leftSection={(<Pencil size={20} />)}>Edit</Button>
               )

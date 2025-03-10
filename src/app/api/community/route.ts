@@ -50,7 +50,7 @@ export async function DELETE(request: NextRequest) {
     if (token.action == 'continue' && requestData.method != undefined && requestData.method == "DELETE_SET") {
         let data = await (await db()).select().from(questionCollection).where(eq(questionCollection.id, requestData?.id));
         // Check if set is under control and then respond
-        if (data.length != 0 && data[0].creatorID == token.credentials?.id) {
+        if (data.length != 0 && (data[0].creatorID == token.credentials?.id || token.credentials?.role != "user")) {
             // DELETE EVERYTHING RELATED!
             // Delete from questionLog
             await (await db()).delete(questionLog).where(eq(questionLog.collectionID, data[0].id));
