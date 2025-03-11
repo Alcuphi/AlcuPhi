@@ -3,7 +3,7 @@
 */
 
 import { db } from "@/db/db";
-import { questionCollection, user } from "@/db/schema";
+import { question, questionCollection, user } from "@/db/schema";
 import { DropdownMenu, NewQuestionSet, SetRenderer } from "@/lib/menu";
 import { getSessionData } from "@/lib/session";
 import { SplashScreen } from "@/lib/ui";
@@ -45,6 +45,9 @@ export default async function Set({ searchParams }: { searchParams: any }) {
   }
   // Define setData
   const setData = set[0];
+  // Get Questions
+  const questions = await (await db()).select().from(question).where(eq(question.collectionID, setData.id));
+  // Expect error due to the equals
   const creator = await (await db()).select({"name": user.name,"id": user.id}).from(user).where(eq(user.id,setData.creatorID));
   // Our set
   return (
@@ -78,10 +81,13 @@ export default async function Set({ searchParams }: { searchParams: any }) {
                   <Button className="w-[25%]" component={Link} href={'/dashboard/community/set/edit?id=' + setData.publicID} leftSection={(<Pencil size={20} />)}>Edit</Button>
                 )
               }
-              <Button className="w-[25%]" component={Link} href={'/dashboard/community/set/edit?id=' + setData.publicID} leftSection={(<Play size={20} />)}>Play Set</Button>
+              {
+                questions.length == 0 ? null : (              <Button className="w-[25%]" component={Link} href={'/dashboard/play?id=' + setData.publicID} leftSection={(<Play size={20} />)} color="grape">Play Set</Button>              )
+              }
             </div>
         </div>
         {/* Questions to render */}
+        {/* Ch */}
       </div>
     </div>
   );
