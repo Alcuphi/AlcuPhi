@@ -9,7 +9,7 @@ import { getSessionData } from "@/lib/session";
 import { SplashScreen } from "@/lib/ui";
 import { Button } from "@mantine/core";
 import { eq } from "drizzle-orm";
-import { ArrowLeft, Brain, BrainIcon, Pencil, TvIcon } from "lucide-react";
+import { ArrowLeft, Brain, BrainIcon, Pencil, Play, TvIcon } from "lucide-react";
 import Link from "next/link";
 
 export default async function Set({ searchParams }: { searchParams: any }) {
@@ -70,14 +70,18 @@ export default async function Set({ searchParams }: { searchParams: any }) {
               <p>{setData.description}</p>
               <p>By {creator[0].name}</p>
             </div>
-            {
-              // @ts-expect-error Since session ID
-              (creator[0].id != session.id || session.role == "user") ? null :
-              (
-                <Button className="w-[25%]" component={Link} href={'/dashboard/community/set/edit?id=' + setData.publicID} leftSection={(<Pencil size={20} />)}>Edit</Button>
-              )
-            }
+            <div className="flex flex-row gap-2">
+              {
+                // @ts-expect-error Since session ID
+                (creator[0].id != session.id || session.role == "user") ? null :
+                (
+                  <Button className="w-[25%]" component={Link} href={'/dashboard/community/set/edit?id=' + setData.publicID} leftSection={(<Pencil size={20} />)}>Edit</Button>
+                )
+              }
+              <Button className="w-[25%]" component={Link} href={'/dashboard/community/set/edit?id=' + setData.publicID} leftSection={(<Play size={20} />)}>Play Set</Button>
+            </div>
         </div>
+        {/* Questions to render */}
       </div>
     </div>
   );
