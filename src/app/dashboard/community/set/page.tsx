@@ -9,7 +9,7 @@ import { getSessionData } from "@/lib/session";
 import { SplashScreen } from "@/lib/ui";
 import { Button } from "@mantine/core";
 import { eq } from "drizzle-orm";
-import { ArrowLeft, Brain, BrainIcon, Pencil, Play, TvIcon } from "lucide-react";
+import { ArrowLeft, Brain, BrainIcon, CircleHelp, Pencil, Play, TvIcon } from "lucide-react";
 import Link from "next/link";
 
 export default async function Set({ searchParams }: { searchParams: any }) {
@@ -87,7 +87,25 @@ export default async function Set({ searchParams }: { searchParams: any }) {
             </div>
         </div>
         {/* Questions to render */}
-        {/* Ch */}
+        {
+          questions.length == 0 ? (
+            <div className="bg-zinc-950 shadow-md w-[100%] rounded-md min-h-52 flex justify-center items-center flex-col gap-4">
+              <div>
+                <h1 className="flex flex-row gap-2 text-[25px] font-bold items-center justify-center"><CircleHelp/> Questions</h1>
+                <p>No questions are available to practice in this set.</p>
+              </div>
+              {
+                // @ts-expect-error Since session ID
+                (creator[0].id != session.id || session.role == "user") ? null :
+                (
+                  <Button className="w-[25%]" color="grape" component={Link} href={'/dashboard/community/set/edit?id=' + setData.publicID} leftSection={(<Pencil size={20} />)}>Create Questions</Button>
+                )
+              }
+            </div>
+          ) : (
+            <></>
+          )
+        }
       </div>
     </div>
   );
