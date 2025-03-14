@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     serverActions: {
-        allowedOrigins: ['localhost:3000', '*.github.dev'],
+        allowedOrigins: ['localhost:3000', '*.github.dev', 'localhost:3001'],
     }
   }
 };

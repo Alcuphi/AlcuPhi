@@ -4,7 +4,7 @@
 
 import { db } from "@/db/db";
 import { question, questionCollection, user } from "@/db/schema";
-import { DropdownMenu, NewQuestionSet, SetRenderer } from "@/lib/menu";
+import { DropdownMenu } from "@/lib/menu";
 import { getSessionData } from "@/lib/session";
 import { SplashScreen } from "@/lib/ui";
 import { Button } from "@mantine/core";
